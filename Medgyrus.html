@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MedGyrus - Pricing</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Just for custom styles for error and success messages */
+    .error-message { color: #f44336; }
+    .success-message { color: #4caf50; }
+  </style>
+</head>
+<body class="bg-gray-100">
+
+  <div class="max-w-lg mx-auto p-6 bg-white rounded-xl shadow-lg mt-10">
+    
+    <form>
+    
+        <script 
+          src="https://checkout.razorpay.com/v1/payment-button.js" 
+          data-payment_button_id="pl_PTa9NqhrLc5cOf"         async 
+        />
+      </form>
+  </div>
+
+  <script>
+    const ORIGINAL_AMOUNT = 499;
+    const promoCodes = {
+      MRB2025: 299,
+      FLASH199: 199,
+      SAVE100: 299,
+      EXAMBOOST50: 249,
+      QUIZPRO20: 279,
+      MRBPRO299: 299,
+      STUDYHARD499: 299,
+      QUICKFLASH399: 199,
+      EXPERTACCESS249: 249,
+      PREMIUM299: 299
+    };
+
+    let amount = ORIGINAL_AMOUNT;
+
+    // Apply promo code logic
+    document.getElementById('applyPromoBtn').addEventListener('click', function() {
+      const promoCode = document.getElementById('promoCode').value.trim().toUpperCase();
+      if (promoCodes[promoCode]) {
+        amount = promoCodes[promoCode];
+        document.getElementById('amount').innerText = amount;
+        document.getElementById('errorMessage').innerText = '';
+        document.getElementById('successMessage').innerText = `Promo code "${promoCode}" applied!`;
+        document.getElementById('resetPromoBtn').style.display = 'block';
+      } else {
+        document.getElementById('errorMessage').innerText = 'Invalid Promo Code';
+        document.getElementById('successMessage').innerText = '';
+      }
+    });
+
+    // Reset promo code
+    document.getElementById('resetPromoBtn').addEventListener('click', function() {
+      amount = ORIGINAL_AMOUNT;
+      document.getElementById('amount').innerText = amount;
+      document.getElementById('promoCode').value = '';
+      document.getElementById('errorMessage').innerText = '';
+      document.getElementById('successMessage').innerText = '';
+      document.getElementById('resetPromoBtn').style.display = 'none';
+    });
+
+    // Razorpay payment functionality
+    document.getElementById('purchaseBtn').addEventListener('click', function() {
+      const options = {
+        key: "PNOrOtzoRvdVE5", // Replace with your Razorpay key
+        amount: amount * 100,  // Amount in paise
+        currency: "INR",
+        name: "MedGyrus",
+        description: "Thank you for your purchase!",
+        image: "https://medgyrus-q-ae120.web.app/assets/logo-bc111326.png",
+        handler: function(response) {
+          alert("Payment Successful!");
+          console.log("Payment ID:", response.razorpay_payment_id);
+        },
+        prefill: {
+          name: "",
+          email: "",
+          contact: ""
+        },
+        theme: {
+          color: "#F37254" // Customize the theme color
+        }
+      };
+      
+      const rzp1 = new Razorpay(options);
+      rzp1.open();
+    });
+  </script>
+
+</body>
+</html>
