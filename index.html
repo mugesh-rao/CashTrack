@@ -1,800 +1,98 @@
 <!DOCTYPE html>
-<html
-  lang="en"
-  class="light-style layout-menu-fixed"
-  dir="ltr"
-  data-theme="theme-default"
-  data-assets-path="./assets/"
-  data-template="vertical-menu-template-free"
->
-  <head>
-    <meta charset="utf-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
-    />
-<link href=".\assets\css\style.css" rel="stylesheet">
-    <title>Expense Tracker </title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href=".\assets/img\avatars/1.jpg" />
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MedGyrus - Pricing</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Just for custom styles for error and success messages */
+    .error-message { color: #f44336; }
+    .success-message { color: #4caf50; }
+  </style>
+</head>
+<body class="bg-gray-100">
 
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
-      rel="stylesheet"
-    />
-
-    <!-- Icons. Uncomment required icon fonts -->
-    <link rel="stylesheet" href=".\assets/vendor/fonts/boxicons.css" />
-
-    <!-- Core CSS -->
-    <link rel="stylesheet" href=".\assets/vendor/css/core.css" class="template-customizer-core-css" />
-    <link rel="stylesheet" href=".\assets/vendor/css/theme-default.css" class="template-customizer-theme-css" />
-    <link rel="stylesheet" href=".\assets\vendor\css\demo.css" />
-
-    <!-- Vendors CSS -->
-    <link rel="stylesheet" href=".\assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
-
-    <link rel="stylesheet" href=".\assets/vendor/libs/apex-charts/apex-charts.css" />
-
-    <!-- Page CSS -->
-
-    <!-- Helpers -->
-    <script src=".\assets/vendor/js/helpers.js"></script>
-
+  <div class="max-w-lg mx-auto p-6 bg-white rounded-xl shadow-lg mt-10">
     
-    <script src=".\assets/js/config.js"></script>
-
-    <!-- Firebase Script Rao-->
-    <script type="module">
-      // Import the functions you need from the SDKs you need
-      import { initializeApp } from "https://www.gstatic.com/firebasejs/9.7.0/firebase-app.js";
-      import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.7.0/firebase-analytics.js";
-      // TODO: Add SDKs for Firebase products that you want to use
-      // https://firebase.google.com/docs/web/setup#available-libraries
+    <form>
     
-      // Your web app's Firebase configuration
-      // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-      const firebaseConfig = {
-        apiKey: "AIzaSyDl-GlRwrdi1MV-rvW3hktoF06zpPuMNpw",
-        authDomain: "vpr-agro-spares.firebaseapp.com",
-        databaseURL: "https://vpr-agro-spares.firebaseio.com",
-        projectId: "vpr-agro-spares",
-        storageBucket: "vpr-agro-spares.appspot.com",
-        messagingSenderId: "447641621311",
-        appId: "1:447641621311:web:128c4cec92abd6555e798a",
-        measurementId: "G-ZYX52ZS961"
+        <script 
+          src="https://checkout.razorpay.com/v1/payment-button.js" 
+          data-payment_button_id="pl_PTa9NqhrLc5cOf"         async 
+        />
+      </form>
+  </div>
+
+  <script>
+    const ORIGINAL_AMOUNT = 499;
+    const promoCodes = {
+      MRB2025: 299,
+      FLASH199: 199,
+      SAVE100: 299,
+      EXAMBOOST50: 249,
+      QUIZPRO20: 279,
+      MRBPRO299: 299,
+      STUDYHARD499: 299,
+      QUICKFLASH399: 199,
+      EXPERTACCESS249: 249,
+      PREMIUM299: 299
+    };
+
+    let amount = ORIGINAL_AMOUNT;
+
+    // Apply promo code logic
+    document.getElementById('applyPromoBtn').addEventListener('click', function() {
+      const promoCode = document.getElementById('promoCode').value.trim().toUpperCase();
+      if (promoCodes[promoCode]) {
+        amount = promoCodes[promoCode];
+        document.getElementById('amount').innerText = amount;
+        document.getElementById('errorMessage').innerText = '';
+        document.getElementById('successMessage').innerText = `Promo code "${promoCode}" applied!`;
+        document.getElementById('resetPromoBtn').style.display = 'block';
+      } else {
+        document.getElementById('errorMessage').innerText = 'Invalid Promo Code';
+        document.getElementById('successMessage').innerText = '';
+      }
+    });
+
+    // Reset promo code
+    document.getElementById('resetPromoBtn').addEventListener('click', function() {
+      amount = ORIGINAL_AMOUNT;
+      document.getElementById('amount').innerText = amount;
+      document.getElementById('promoCode').value = '';
+      document.getElementById('errorMessage').innerText = '';
+      document.getElementById('successMessage').innerText = '';
+      document.getElementById('resetPromoBtn').style.display = 'none';
+    });
+
+    // Razorpay payment functionality
+    document.getElementById('purchaseBtn').addEventListener('click', function() {
+      const options = {
+        key: "PNOrOtzoRvdVE5", // Replace with your Razorpay key
+        amount: amount * 100,  // Amount in paise
+        currency: "INR",
+        name: "MedGyrus",
+        description: "Thank you for your purchase!",
+        image: "https://medgyrus-q-ae120.web.app/assets/logo-bc111326.png",
+        handler: function(response) {
+          alert("Payment Successful!");
+          console.log("Payment ID:", response.razorpay_payment_id);
+        },
+        prefill: {
+          name: "",
+          email: "",
+          contact: ""
+        },
+        theme: {
+          color: "#F37254" // Customize the theme color
+        }
       };
-    
-      // Initialize Firebase
-      const app = initializeApp(firebaseConfig);
-      const analytics = getAnalytics(app);
-    </script>
-  </head>
+      
+      const rzp1 = new Razorpay(options);
+      rzp1.open();
+    });
+  </script>
 
-  <body>
-    <!-- Layout wrapper -->
-    <div class="layout-wrapper layout-content-navbar">
-      <div class="layout-container">
-        <!-- Menu -->
-
-        <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
-          <div class="app-brand demo">
-            <a href="index.html" class="app-brand-link">
-              <span class="app-brand-logo demo">
-            
-              </span>
-              <span class="app-brand-text demo menu-text fw-bolder ms-2": style="text-transform:capitalize;" ></h1 style="text-transform:capitalize;"> CashTrack</h1></span>
-            </a>
-
-            <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
-              <i class="bx bx-chevron-left bx-sm align-middle"></i>
-            </a>
-          </div>
-
-          <div class="menu-inner-shadow"></div>
-
-          <ul class="menu-inner py-1">
-            <!-- Dashboard -->
-              <!-- Dashboard -->
-              <li class="menu-item active">
-                <a href="index.html" class="menu-link">
-                  <i class="menu-icon tf-icons bx bx-home-circle"></i>
-                  <div data-i18n="Analytics">Home</div>
-                </a>
-              </li>
-  
-             
-              <li class="menu-header small text-uppercase">
-                <span class="menu-header-text">Pages</span>
-              </li>
-              <li class="menu-item">
-                <a href="piechart.html" class="menu-link menu-toggle">
-                  <i class="menu-icon tf-icons bx bx-dock-top"></i>
-                  <div data-i18n="Account Settings">Pie Chart</div>
-                </a>
-                                      
-                                                 
-               
-              </li>
-             
-            <!-- Misc -->
-            
-            <li class="menu-item">
-            
-            </li>
-          </ul>
-        </aside>
-        <!-- / Menu -->
-
-        <!-- Layout container -->
-        <div class="layout-page">
-          <!-- Navbar -->
-
-          <nav
-            class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme"
-            id="layout-navbar"
-          >
-            <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
-              <a class="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)">
-                <i class="bx bx-menu bx-sm"></i>
-              </a>
-            </div>
-
-            <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
-              <!-- Search -->
-              <div class="navbar-nav align-items-center">
-                <div class="nav-item d-flex align-items-center">
-                  <i class="bx bx-search fs-4 lh-0"></i>
-                  <input
-                    type="text"
-                    class="form-control border-0 shadow-none"
-                    placeholder="Search..."
-                    aria-label="Search..."
-                  />
-                </div>
-              </div>
-              <!-- /Search -->
-
-              <ul class="navbar-nav flex-row align-items-center ms-auto">
-                <!-- Place this tag where you want the button to render. -->
-                   <!-- User -->
-                <li class="nav-item navbar-dropdown dropdown-user dropdown">
-                  <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
-                    <div class="avatar avatar-online">
-                      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f1/Heart_coraz%C3%B3n.svg/1200px-Heart_coraz%C3%B3n.svg.png" alt="">
-<input type="button" value="">
-                    </div>
-                  </a>
-                  <ul class="dropdown-menu dropdown-menu-end">
-                    <li>
-                      <a class="dropdown-item" href="#">
-                        <div class="d-flex">
-                          <div class="flex-shrink-0 me-3">
-                            <div class="avatar avatar-online" " >
-                              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f1/Heart_coraz%C3%B3n.svg/1200px-Heart_coraz%C3%B3n.svg.png" alt class="w-px-40 h-auto rounded-circle" />
-                            </div>
-                          </div>
-                          <div class="flex-grow-1">
-                            <span class="fw-semibold d-block">Tara</span>
-                            <small class="text-muted">Author</small>
-                          </div>
-                        </div>
-                      </a>
-                    </li>
-                             
-                  </ul>
-                </li>
-                <!--/ User -->
-              </ul>
-            </div>
-          </nav>
-
-          <!-- / Navbar -->
-
-          <!-- Content wrapper -->
-          <div class="content-wrapper">
-            <!-- Content -->
-
-            <div class="container-xxl flex-grow-1 container-p-y">
-              <div class="row">
-                <div class="col-lg-8 mb-4 order-0" style="width: 2000px;padding: 10px;">
-                  <div class="card">
-                    <div class="d-flex align-items-end row">
-                      <div class="col-sm-7">
-                        <div class="card-body">
-                          <h5 class="card-title text-primary">Expense Tracker </h5>
-                          <p class="mb-4">
-                            This Site Provides Detailed data analysis Expense Tracker
-                                                        
-                          </p>
-                          <a  href="./RentTo.apk" download="RentTo.apk"  >Read More</a>
-                        </div>
-                      </div>
-                      <div class="col-sm-5 text-center text-sm-left">
-                        <div class="card-body pb-0 px-0 px-md-4"  >
-                          <img
-                            src=".\assets\img\illustrations\1.png"
-                            height="140"
-                                                                               
-                            alt="View Badge User"
-                            data-app-dark-img="illustrations/man-with-laptop-dark.png"
-                            data-app-light-img="illustrations/man-with-laptop-light.png"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  
-                    <!-- Vertically Centered Modal -->
-                    <div class="col-lg-4 col-md-6">
-                     
-                      <div class="mt-3">
-                        <!-- Button trigger modal -->
-                        <button
-                          style="position: fixed;
-                          bottom: 3rem;
-                          width: 200px;
-                          color: #fff;
-  background-color: #ff3e1d;
-  border-color: #ff3e1d;
-  box-shadow: 0 0.125rem 0.25rem 0 rgba(255, 62, 29, 0.4);
-                          ;
-                          right: px;
-                          z-index: 999999;"
-                          
-                          type="button"
-                          class="btn btn-primary"
-                          data-bs-toggle="modal"
-                          data-bs-target="#modalCenter"
-                        >
-                          Cash Out
-                        </button>
-                      
-
-                        <!-- Modal -->
-                        <div class="modal fade" id="modalCenter" tabindex="-1" aria-hidden="true">
-                          <div class="modal-dialog modal-dialog-centered" role="document">
-                            <div class="modal-content">
-                              <div class="modal-header">
-                                <h5 class="modal-title" id="modalCenterTitle">Cash out</h5>
-                                <button
-                                  type="button"
-                                  class="btn-close"
-                                  data-bs-dismiss="modal"
-                                  aria-label="Close"
-                                ></button>
-                              </div>
-                              <div class="modal-body">
-                                <div class="row">
-                                  <div class="col mb-3">
-                                    <label for="nameWithTitle" class="form-label">Amount</label>
-                                    <input
-                                      type="text"
-                                      id="nameWithTitle"
-                                      class="form-control"
-                                      placeholder="Enter The Amount"
-                                    />
-                                  </div>
-                                </div>
-                                <div class="row g-2">
-                                  <div class="col mb-0">
-                                    <label for="emailWithTitle" class="form-label">Remarks</label>
-                                    <input
-                                      type="text"
-                                      id="emailWithTitle"
-                                      class="form-control"
-                                      placeholder="Enter The Expense"
-                                    />
-                                  </div>
-                                  <div class="col mb-0">
-                                    <label for="dobWithTitle" class="form-label">Date</label>
-                                    <input
-                                      type="date"
-                                      id="dobWithTitle"
-                                      class="form-control"
-                                      placeholder="DD / MM / YY"
-                                    />
-                                  </div>
-                                </div>
-                              </div>
-                              <div class="modal-footer">
-                                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-                                  Close
-                                </button>
-                                <button type="button" class="btn btn-primary">Save changes</button>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        
-                      </div>
-                      
-                   
-                    </div>
-                 
-                     <!-- Cash In-->
-                     <div class="col-lg-4 col-md-6">
-                                            <div class="mt-3">
-                      
-                       
-                        <button
-                        style="position: fixed;
-                        bottom: 3rem;
-                        width: 200px;
-                        right: 22px;
-                        z-index: 999999;
-                        "
-                          
-                        }
-                          type="button"
-                          class="btn btn-primary"
-                          data-bs-toggle="modal"
-                          data-bs-target="#modalCenter"
-                        >
-                          Cash  In
-                        </button>
-                      
-
-                        <!-- Modal -->
-                        <div class="modal fade" id="modalCenter" tabindex="-1" aria-hidden="true">
-                          <div class="modal-dialog modal-dialog-centered" role="document">
-                            <div class="modal-content">
-                              <div class="modal-header">
-                                <h5 class="modal-title" id="modalCenterTitle">Cash In</h5>
-                                <button
-                                  type="button"
-                                  class="btn-close"
-                                  data-bs-dismiss="modal"
-                                  aria-label="Close"
-                                ></button>
-                              </div>
-                              <div class="modal-body">
-                                <div class="row">
-                                  <div class="col mb-3">
-                                    <label for="nameWithTitle" class="form-label">Amount</label>
-                                    <input
-                                      type="text"
-                                      id="nameWithTitle"
-                                      class="form-control"
-                                      placeholder="Enter The Amount"
-                                    />
-                                  </div>
-                                </div>
-                                <div class="row g-2">
-                                  <div class="col mb-0">
-                                    <label for="emailWithTitle" class="form-label">Remarks</label>
-                                    <input
-                                      type="text"
-                                      id="emailWithTitle"
-                                      class="form-control"
-                                      placeholder="Enter The Income"
-                                    />
-                                  </div>
-                                  <div class="col mb-0">
-                                    <label for="dobWithTitle" class="form-label">Date</label>
-                                    <input
-                                      type="date"
-                                      id="dobWithTitle"
-                                      class="form-control"
-                                      placeholder="DD / MM / YY"
-                                    />
-                                  </div>
-                                </div>
-                              </div>
-                              <div class="modal-footer">
-                                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-                                  Close
-                                </button>
-                                <button type="button" class="btn btn-primary">Save changes</button>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                </div>
-                
-          
-                <!-- Order Statistics -->
-                <div class="col-md-6 col-lg-4 col-xl-4 order-0 mb-4">
-                  <div class="card h-100">
-                    <div class="card-header d-flex align-items-center justify-content-between pb-0">
-                      <div class="card-title mb-0">
-                        <h5 class="m-0 me-2">Total Transactions</h5>
-                        <small class="text-muted">42k Total Cash</small>
-                      </div>
-               
-                    </div>
-                    <div class="card-body">
-                      <div class="d-flex justify-content-between align-items-center mb-3">
-                        <div class="d-flex flex-column align-items-center gap-1">
-                          <h2 class="mb-2">9520 INR</h2>
-                          <span>Today Expense</span>
-                        </div>
-                        <div id="orderStatisticsChart"></div>
-                      </div>
-                      <ul class="p-0 m-0">
-                        <li class="d-flex mb-4 pb-1">
-                          <div class="avatar flex-shrink-0 me-3">
-                            <span class="avatar-initial rounded bg-label-primary"
-                              ><i class="bx bx-mobile-alt"></i
-                            ></span>
-                          </div>
-                          <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                            <div class="me-2">
-                              <h6 class="mb-0">Electronic</h6>
-                              <small class="text-muted">Mobile, Earbuds, TV</small>
-                            </div>
-                            <div class="user-progress">
-                              <small class="fw-semibold">81.2k</small>
-                            </div>
-                          </div>
-                        </li>
-                        <li class="d-flex mb-4 pb-1">
-                          <div class="avatar flex-shrink-0 me-3">
-                            <span class="avatar-initial rounded bg-label-success"><i class="bx bx-closet"></i></span>
-                          </div>
-                          <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                            <div class="me-2">
-                              <h6 class="mb-0">Fashion</h6>
-                              <small class="text-muted">T-shirt, Jeans, Shoes</small>
-                            </div>
-                            <div class="user-progress">
-                              <small class="fw-semibold">23.8k</small>
-                            </div>
-                          </div>
-                        </li>
-                        <li class="d-flex mb-4 pb-1">
-                          <div class="avatar flex-shrink-0 me-3">
-                            <span class="avatar-initial rounded bg-label-info"><i class="bx bx-home-alt"></i></span>
-                          </div>
-                          <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                            <div class="me-2">
-                              <h6 class="mb-0">Home Expense</h6>
-                              <small class="text-muted">Fine Art, Dining</small>
-                            </div>
-                            <div class="user-progress">
-                              <small class="fw-semibold">849k</small>
-                            </div>
-                          </div>
-                        </li>
-                        <li class="d-flex">
-                          <div class="avatar flex-shrink-0 me-3">
-                            <span class="avatar-initial rounded bg-label-secondary"
-                              ><i class="bx bx-football"></i
-                            ></span>
-                          </div>
-                          <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                            <div class="me-2">
-                              <h6 class="mb-0">Sports</h6>
-                              <small class="text-muted">Football, Cricket Kit</small>
-                            </div>
-                            <div class="user-progress">
-                              <small class="fw-semibold">99k</small>
-                            </div>
-                          </div>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-                <!--/ Order Statistics -->
-
-
-                <!-- Income Transactions -->
-                <div class="col-md-6 col-lg-4 order-2 mb-4">
-                  <div class="card h-100">
-                    <div class="card-header d-flex align-items-center justify-content-between">
-                      <h5 class="card-title m-0 me-2">Income Transactions</h5>
-                     
-                    </div>
-                    <div class="card-body">
-                      <ul class="p-0 m-0">
-                        <li class="d-flex mb-4 pb-1">
-                          <div class="avatar flex-shrink-0 me-3">
-                            <img src="./assets/img/icons/unicons/paypal.png" alt="User" class="rounded" />
-                          </div>
-                          <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                            <div class="me-2">
-                              <small class="text-muted d-block mb-1">Paytm</small>
-                              <h6 class="mb-0">Send money</h6>
-                            </div>
-                            <div class="user-progress d-flex align-items-center gap-1">
-                              <h6 class="mb-0">+82.6</h6>
-                              <span class="text-muted">INR</span>
-                            </div>
-                          </div>
-                        </li>
-                        <li class="d-flex mb-4 pb-1">
-                          <div class="avatar flex-shrink-0 me-3">
-                            <img src="./assets/img/icons/unicons/wallet.png" alt="User" class="rounded" />
-                          </div>
-                          <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                            <div class="me-2">
-                              <small class="text-muted d-block mb-1">Wallet</small>
-                              <h6 class="mb-0">Shirt Return</h6>
-                            </div>
-                            <div class="user-progress d-flex align-items-center gap-1">
-                              <h6 class="mb-0">+270.69</h6>
-                              <span class="text-muted">INR</span>
-                            </div>
-                          </div>
-                        </li>
-                        <li class="d-flex mb-4 pb-1">
-                          <div class="avatar flex-shrink-0 me-3">
-                            <img src="./assets/img/icons/unicons/chart.png" alt="User" class="rounded" />
-                          </div>
-                          <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                            <div class="me-2">
-                              <small class="text-muted d-block mb-1">Transfer</small>
-                              <h6 class="mb-0">Flipkart Refund</h6>
-                            </div>
-                            <div class="user-progress d-flex align-items-center gap-1">
-                              <h6 class="mb-0">+637.91</h6>
-                              <span class="text-muted">INR</span>
-                            </div>
-                          </div>
-                        </li>
-                        <li class="d-flex mb-4 pb-1">
-                          <div class="avatar flex-shrink-0 me-3">
-                            <img src="./assets/img/icons/unicons/cc-success.png" alt="User" class="rounded" />
-                          </div>
-                          <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                            <div class="me-2">
-                              <small class="text-muted d-block mb-1">Credit Card</small>
-                              <h6 class="mb-0"> Speaker Return</h6>
-                            </div>
-                            <div class="user-progress d-flex align-items-center gap-1">
-                              <h6 class="mb-0">+838.71</h6>
-                              <span class="text-muted">INR</span>
-                            </div>
-                          </div>
-                        </li>
-                        <li class="d-flex mb-4 pb-1">
-                          <div class="avatar flex-shrink-0 me-3">
-                            <img src="./assets/img/icons/unicons/wallet.png" alt="User" class="rounded" />
-                          </div>
-                          <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                            <div class="me-2">
-                              <small class="text-muted d-block mb-1">Wallet</small>
-                              <h6 class="mb-0">Salary</h6>
-                            </div>
-                            <div class="user-progress d-flex align-items-center gap-1">
-                              <h6 class="mb-0">+2,00,000</h6>
-                              <span class="text-muted">INR</span>
-                            </div>
-                          </div>
-                        </li>
-                        <li class="d-flex">
-                          <div class="avatar flex-shrink-0 me-3">
-                            <img src="./assets/img/icons/unicons/cc-warning.png" alt="User" class="rounded" />
-                          </div>
-                          <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                            <div class="me-2">
-                              <small class="text-muted d-block mb-1">Mastercard</small>
-                              <h6 class="mb-0">Youtube Income</h6>
-                            </div>
-                            <div class="user-progress d-flex align-items-center gap-1">
-                              <h6 class="mb-0">+92,000</h6>
-                              <span class="text-muted">INR</span>
-                            </div>
-                          </div>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              
-
-
-
-                
-                <!-- Transactions -->
-                <div class="col-md-6 col-lg-4 order-2 mb-4">
-                  <div class="card h-100">
-                    <div class="card-header d-flex align-items-center justify-content-between">
-                      <h5 class="card-title m-0 me-2">Expense Transactions</h5>
-                      
-                    </div>
-                    <div class="card-body">
-                      <ul class="p-0 m-0">
-                        <li class="d-flex mb-4 pb-1">
-                          <div class="avatar flex-shrink-0 me-3">
-                            <img src="./assets/img/icons/unicons/paypal.png" alt="User" class="rounded" />
-                          </div>
-                          <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                            <div class="me-2">
-                              <small class="text-muted d-block mb-1">Phonepe</small>
-                              <h6 class="mb-0">Recharge</h6>
-                            </div>
-                            <div class="user-progress d-flex align-items-center gap-1">
-                              <h6 class="mb-0">-239</h6>
-                              <span class="text-muted">INR</span>
-                            </div>
-                          </div>
-                        </li>
-                        <li class="d-flex mb-4 pb-1">
-                          <div class="avatar flex-shrink-0 me-3">
-                            <img src="./assets/img/icons/unicons/wallet.png" alt="User" class="rounded" />
-                          </div>
-                          <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                            <div class="me-2">
-                              <small class="text-muted d-block mb-1">Wallet</small>
-                              <h6 class="mb-0">Snacks</h6>
-                            </div>
-                            <div class="user-progress d-flex align-items-center gap-1">
-                              <h6 class="mb-0">-100</h6>
-                              <span class="text-muted">INR</span>
-                            </div>
-                          </div>
-                        </li>
-                        <li class="d-flex mb-4 pb-1">
-                          <div class="avatar flex-shrink-0 me-3">
-                            <img src="./assets/img/icons/unicons/chart.png" alt="User" class="rounded" />
-                          </div>
-                          <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                            <div class="me-2">
-                              <small class="text-muted d-block mb-1">Transfer</small>
-                              <h6 class="mb-0">Friend Borrow</h6>
-                            </div>
-                            <div class="user-progress d-flex align-items-center gap-1">
-                              <h6 class="mb-0">-600</h6>
-                              <span class="text-muted">INR</span>
-                            </div>
-                          </div>
-                        </li>
-                        <li class="d-flex mb-4 pb-1">
-                          <div class="avatar flex-shrink-0 me-3">
-                            <img src="./assets/img/icons/unicons/cc-success.png" alt="User" class="rounded" />
-                          </div>
-                          <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                            <div class="me-2">
-                              <small class="text-muted d-block mb-1">Credit Card</small>
-                              <h6 class="mb-0">Speaker</h6>
-                            </div>
-                            <div class="user-progress d-flex align-items-center gap-1">
-                              <h6 class="mb-0">-499</h6>
-                              <span class="text-muted">INR</span>
-                            </div>
-                          </div>
-                        </li>
-                        <li class="d-flex mb-4 pb-1">
-                          <div class="avatar flex-shrink-0 me-3">
-                            <img src="./assets/img/icons/unicons/wallet.png" alt="User" class="rounded" />
-                          </div>
-                          <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                            <div class="me-2">
-                              <small class="text-muted d-block mb-1">Wallet</small>
-                              <h6 class="mb-0">Starbucks</h6>
-                            </div>
-                            <div class="user-progress d-flex align-items-center gap-1">
-                              <h6 class="mb-0">+199</h6>
-                              <span class="text-muted">INR</span>
-                            </div>
-                          </div>
-                        </li>
-                        <li class="d-flex">
-                          <div class="avatar flex-shrink-0 me-3">
-                            <img src="./assets/img/icons/unicons/cc-warning.png" alt="User" class="rounded" />
-                          </div>
-                          <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                            <div class="me-2">
-                              <small class="text-muted d-block mb-1">Mastercard</small>
-                              <h6 class="mb-0">Ordered Food</h6>
-                            </div>
-                            <div class="user-progress d-flex align-items-center gap-1">
-                              <h6 class="mb-0">-750</h6>
-                              <span class="text-muted">INR</span>
-                            </div>
-                          </div>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              
-
-
-
-   
-                
-                
-                
-
-               
-              </div>
-                     
-              <div class="row">
-                <div class="card" style=" height: 60px;padding-bottom: 10px;">
-                  <h5 class="card-title" style="padding:20px;font-size: 20px;
-                  text-align: center;"  >Expense Chart Analytics</h5>
-                </div>
-                <br>
-                <hr>
-                </div>
-                <!--Chart.js1-->
-                <div class="row">
-                  <div class="card">
-
-                  <canvas id="myChart" style="width:100%;height: 500px;"></canvas>
-                  <script>
-                  var ctx = document.getElementById("myChart").getContext('2d');
-                  
-                  // Define the data 
-                  var barTotalPopulationData = [520,	232,	659,	200,	100]; // Add data values to array
-                  
-                  
-                  var labels = ["Electronic",	"Fashinon",	"Home Expense",	"Sports",	"Miscellonous"]; // Add labels to array
-                  // End Defining data
-                  
-                  // End Defining data
-                  var myChart = new Chart(ctx, {
-                  type: 'bar',
-                  data: {
-                  labels: labels,
-                  datasets: [{
-                    label: 'Total', // Name the series
-                    data: barTotalPopulationData, // Specify the data values array
-                    backgroundColor: [ // Specify custom colors
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(54, 162, 235, 0.2)',
-                        'rgba(255, 206, 86, 0.2)',
-                        'rgba(75, 192, 192, 0.2)',
-                        'rgba(153, 102, 255, 0.2)'
-                    ],
-                    
-                    borderWidth: 3 // Specify bar border width
-                  },
-                    ]
-                  },
-                  options: {
-                  responsive: true, // Instruct chart js to respond nicely.
-                  maintainAspectRatio: false, // Add to prevent default behaviour of full-width/height 
-                  }
-                  }); </script>
-                  
-                </div>
-                   
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-
-
-                <!---------------- Chart.js---------->
-            </div>
-            <!-- / Content -->
-            
-
-            <!-- Footer -->
-            <footer class="content-footer footer bg-footer-theme">
-              <div class="container-xxl d-flex flex-wrap justify-content-between py-2 flex-md-row flex-column">
-                
-
-              </div>
-            </footer>
-            <!-- / Footer -->
-            <div class="content-backdrop fade"></div>
-          </div>
-          <!-- Content wrapper -->
-        </div>
-        <!-- / Layout page -->
-      </div>
-
-      <!-- Overlay -->
-      <div class="layout-overlay layout-menu-toggle"></div>
-    </div>
-   
-    <!-- Page JS -->
-    <script src="./assets/js/dashboards-analytics.js"></script>
-
-    <!-- Place this tag in your head or just before your close body tag. -->
-    <script async defer src="https://buttons.github.io/buttons.js"></script>
-  </body>
+</body>
 </html>
